@@ -1,0 +1,9 @@
+name = "clients-web"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "./dist"
+
+# Per desplegar:
+#   CLOUDFLARE_ACCOUNT_ID=e852199b9a1d1315351c139d55842a9a npm run deploy
+# L'account_id del compte "clients-web" es passa via variable d'entorn
+# (wrangler.toml de Pages no admet account_id).
+

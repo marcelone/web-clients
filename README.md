@@ -58,6 +58,25 @@ node screenshots.cjs
 
 Las capturas se guardan en `%TEMP%/boda-shots/`.
 
-## Despliegue en Cloudflare Workers
+## Despliegue en Cloudflare Pages
 
-El build es 100% estático (HTML + CSS + SVG). Sube el contenido de `dist/` directamente o configura el adapter `@astrojs/cloudflare` si necesitas SSR.
+El build es 100% estático. Se publica como Cloudflare Pages (subdominio `*.workers.dev` o dominio custom).
+
+```bash
+# 1. Login interactivo (abre el navegador)
+npx wrangler login
+
+# 2. Crear el proyecto (solo la primera vez)
+npx wrangler pages project create clients-web --production-branch master
+
+# 3. Build + deploy
+npm run deploy
+# Equivale a: astro build && wrangler pages deploy ./dist --project-name clients-web
+```
+
+URL provisional: `https://clients-web.workers.dev`
+
+### Variables de entorno
+
+Si necesitas variables (p.ej. URL final, IDs de servicios), créalas en
+[Cloudflare Dashboard](https://dash.cloudflare.com) → Workers & Pages → clients-web → Settings → Environment variables.
