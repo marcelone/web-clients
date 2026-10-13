@@ -1,0 +1,35 @@
+---
+/**
+ * Concentric — 70s concentric circles (target / vinyl).
+ */
+interface Props {
+  size?: number | string;
+  colors?: string[];
+  className?: string;
+}
+const {
+  size = 120,
+  colors = ['#5423A6', '#FF65B3', '#FFD84D', '#FF651F', '#191414'],
+  className = '',
+} = Astro.props;
+const rings = colors.length;
+---
+
+<svg
+  viewBox="0 0 100 100"
+  width={size}
+  height={size}
+  class={`concentric ${className}`}
+  aria-hidden="true"
+>
+  {Array.from({ length: rings }).map((_, i) => {
+    const r = 48 - i * (48 / rings);
+    return <circle cx="50" cy="50" r={r} fill={colors[i % colors.length]} stroke="#191414" stroke-width="0.6" />;
+  })}
+</svg>
+
+<style>
+  .concentric {
+    overflow: visible;
+  }
+</style>

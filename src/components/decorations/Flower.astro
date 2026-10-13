@@ -1,0 +1,57 @@
+---
+/**
+ * Flower — retro 70s psychedelic flower.
+ * variant: 'a' (5-petal) | 'b' (6-petal) | 'c' (daisy)
+ */
+interface Props {
+  size?: number | string;
+  color?: string;
+  accent?: string;
+  core?: string;
+  variant?: 'a' | 'b' | 'c';
+  rotate?: number;
+  className?: string;
+}
+const {
+  size = 140,
+  color = '#FF651F',
+  accent = '#FFD84D',
+  core = '#191414',
+  variant = 'a',
+  rotate = 0,
+  className = '',
+} = Astro.props;
+
+const petals = variant === 'b' ? 6 : variant === 'c' ? 8 : 5;
+const petalPath = (i: number) => {
+  const angle = (360 / petals) * i;
+  return `rotate(${angle} 100 100)`;
+};
+---
+
+<svg
+  viewBox="0 0 200 200"
+  width={size}
+  height={size}
+  class={`flower flower--${variant} ${className}`}
+  style={`transform:rotate(${rotate}deg)`}
+  aria-hidden="true"
+>
+  <g>
+    {Array.from({ length: petals }).map((_, i) => (
+      <g transform={petalPath(i)}>
+        <ellipse cx="100" cy="50" rx="28" ry="46" fill={color} stroke="#191414" stroke-width="3" />
+        <ellipse cx="100" cy="46" rx="14" ry="30" fill={accent} />
+      </g>
+    ))}
+  </g>
+  <circle cx="100" cy="100" r="22" fill={core} stroke="#191414" stroke-width="3" />
+  <circle cx="100" cy="100" r="10" fill={accent} />
+</svg>
+
+<style>
+  .flower {
+    overflow: visible;
+    filter: drop-shadow(0 6px 8px rgba(25, 20, 20, 0.18));
+  }
+</style>

@@ -1,0 +1,355 @@
+---
+import cfg from '../data/wedding.ts';
+import { formatLongDate, isPlaceholder } from '../data/wedding.ts';
+import Star from './decorations/Star.astro';
+import Squiggle from './decorations/Squiggle.astro';
+import Burst from './decorations/Burst.astro';
+
+const date = formatLongDate(cfg.event.date);
+const time = cfg.event.time || '';
+const placeholder = !date || isPlaceholder(cfg.event.date);
+const isoDate = cfg.event.date;
+const arrival = cfg.event.arrivalTime;
+---
+
+<section id="fecha" class="date" data-bg="purple">
+  <div class="date__decor" aria-hidden="true">
+    <Burst size="220" color="#FFD84D" accent="#FF651F" rotate={-12} className="date__burst" />
+    <Star size="64" color="#FF65B3" points={8} rotate={15} className="date__star date__star--1" />
+    <Star size="44" color="#FFD84D" rotate={-20} className="date__star date__star--2" />
+    <Squiggle color="#FFD84D" width="180" height="24" className="date__squiggle" />
+  </div>
+
+  <div class="container date__container">
+    <div class="date__header reveal">
+      <span class="eyebrow"><span aria-hidden="true">★</span> 01 · El gran día</span>
+      <h2 class="date__title section-title">{cfg.copy.dateHeading}</h2>
+    </div>
+
+    <div class="date__poster reveal">
+      <div class="date__poster-top">
+        <span class="date__lineup">feat. {cfg.couple.a} & {cfg.couple.b}</span>
+        <span class="date__venue">— {placeholder ? 'Pendiente de confirmar' : (date?.weekday ?? '')} —</span>
+      </div>
+
+      {placeholder ? (
+        <div class="date__placeholder">
+          <p>Próximamente cerraremos la fecha definitiva.</p>
+          <p class="date__placeholder-sub">Estate atent@ a esta web. La fiesta está a la vuelta de la esquina.</p>
+        </div>
+      ) : (
+        <div class="date__big">
+          <span class="date__num">{String(date!.day).padStart(2, '0')}</span>
+          <div class="date__month-year">
+            <span class="date__month">{date!.month}</span>
+            <span class="date__year">{date!.year}</span>
+          </div>
+        </div>
+      )}
+
+      <div class="date__meta">
+        <div class="date__meta-item">
+          <span class="date__meta-label">Apertura de puertas</span>
+          <span class="date__meta-value">{arrival || 'Próximamente'}</span>
+        </div>
+        <div class="date__meta-item">
+          <span class="date__meta-label">Ceremonia & fiesta</span>
+          <span class="date__meta-value">{time || 'Próximamente'}</span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="countdown reveal"
+      data-iso={isoDate}
+      data-time={time || '00:00'}
+      aria-live="polite"
+    >
+      <div class="countdown__label">Faltan…</div>
+      <div class="countdown__grid">
+        <div class="countdown__cell"><span data-cd="days">--</span><small>días</small></div>
+        <div class="countdown__cell"><span data-cd="hours">--</span><small>horas</small></div>
+        <div class="countdown__cell"><span data-cd="minutes">--</span><small>min</small></div>
+        <div class="countdown__cell"><span data-cd="seconds">--</span><small>seg</small></div>
+      </div>
+      <p class="countdown__tagline" data-cd-message>¡La cuenta atrás está en marcha!</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .date {
+    position: relative;
+    isolation: isolate;
+    padding: var(--section-pad-y) 0;
+    background: var(--c-purple);
+    color: var(--c-cream);
+    overflow: hidden;
+  }
+  .date__decor {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .date__decor :global(.date__burst) {
+    position: absolute;
+    top: 6%;
+    left: -8%;
+    width: clamp(110px, 20vw, 220px);
+  }
+  .date__decor :global(.date__star--1) {
+    position: absolute;
+    top: 14%;
+    right: 6%;
+    animation: spin-slow 24s linear infinite;
+  }
+  .date__decor :global(.date__star--2) {
+    position: absolute;
+    bottom: 16%;
+    right: 12%;
+    animation: spin-slow-rev 18s linear infinite;
+  }
+  .date__decor :global(.date__squiggle) {
+    position: absolute;
+    bottom: 10%;
+    left: 6%;
+  }
+
+  .date__container {
+    position: relative;
+    z-index: 1;
+  }
+  .date__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .date__title {
+    margin-top: 0.8rem;
+    color: var(--c-butter);
+    text-shadow: 4px 4px 0 var(--c-black);
+  }
+
+  /* Poster card */
+  .date__poster {
+    background: var(--c-cream);
+    color: var(--c-black);
+    border: 4px solid var(--c-black);
+    border-radius: var(--br-lg);
+    box-shadow: var(--shadow-3);
+    padding: clamp(1.4rem, 3vw, 2.4rem);
+    max-width: 720px;
+    margin: 0 auto;
+    transform: rotate(-1deg);
+    text-align: center;
+  }
+  .date__poster-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    border-bottom: 2px dashed var(--c-black);
+    padding-bottom: 1rem;
+  }
+  .date__lineup {
+    font-family: var(--ff-display);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--c-purple);
+  }
+  .date__venue {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .date__big {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    margin: 1.5rem 0 1.2rem;
+  }
+  .date__num {
+    font-family: var(--ff-display);
+    font-size: clamp(7rem, 22vw, 14rem);
+    line-height: 0.9;
+    color: var(--c-orange);
+    -webkit-text-stroke: 3px var(--c-black);
+    text-shadow: 8px 8px 0 var(--c-pink);
+  }
+  .date__month-year {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .date__month {
+    font-family: var(--ff-display);
+    font-size: clamp(1.6rem, 5vw, 3rem);
+    text-transform: uppercase;
+    color: var(--c-purple);
+  }
+  .date__year {
+    font-family: var(--ff-display);
+    font-size: clamp(2.4rem, 8vw, 5rem);
+    color: var(--c-black);
+    -webkit-text-stroke: 1px var(--c-black);
+  }
+
+  .date__placeholder {
+    padding: 2rem 0;
+  }
+  .date__placeholder p {
+    font-family: var(--ff-display);
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--c-purple);
+  }
+  .date__placeholder-sub {
+    margin-top: 0.4rem;
+    font-family: var(--ff-body) !important;
+    font-size: 1rem !important;
+    color: var(--c-black);
+    font-weight: 500;
+  }
+
+  .date__meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px dashed var(--c-black);
+  }
+  .date__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .date__meta-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-purple);
+  }
+  .date__meta-value {
+    font-family: var(--ff-display);
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  }
+
+  /* Countdown */
+  .countdown {
+    margin: 3rem auto 0;
+    max-width: 720px;
+    text-align: center;
+  }
+  .countdown__label {
+    display: inline-block;
+    background: var(--c-butter);
+    color: var(--c-black);
+    border: 3px solid var(--c-black);
+    border-radius: 999px;
+    padding: 0.3rem 1rem;
+    font-family: var(--ff-display);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    transform: rotate(-2deg);
+  }
+  .countdown__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+  }
+  .countdown__cell {
+    background: var(--c-cream);
+    color: var(--c-black);
+    border: 3px solid var(--c-black);
+    border-radius: var(--br-md);
+    padding: 1rem 0.4rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--shadow-1);
+  }
+  .countdown__cell:nth-child(odd) { background: var(--c-butter); }
+  .countdown__cell:nth-child(even) { background: var(--c-pink); }
+  .countdown__cell span {
+    font-family: var(--ff-display);
+    font-size: clamp(1.8rem, 6vw, 3.4rem);
+    line-height: 1;
+  }
+  .countdown__cell small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+  .countdown__tagline {
+    margin-top: 1.2rem;
+    font-family: var(--ff-display);
+    font-size: 1.2rem;
+    color: var(--c-butter);
+  }
+
+  @media (min-width: 720px) {
+    .date__meta {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const el = document.querySelector<HTMLElement>('.countdown');
+    if (!el) return;
+    const iso = el.dataset.iso;
+    const time = el.dataset.time || '00:00';
+    if (!iso) {
+      el.style.display = 'none';
+      return;
+    }
+    const target = new Date(`${iso}T${time}:00`);
+    if (Number.isNaN(target.getTime())) {
+      el.style.display = 'none';
+      return;
+    }
+    const days = el.querySelector<HTMLElement>('[data-cd="days"]');
+    const hours = el.querySelector<HTMLElement>('[data-cd="hours"]');
+    const minutes = el.querySelector<HTMLElement>('[data-cd="minutes"]');
+    const seconds = el.querySelector<HTMLElement>('[data-cd="seconds"]');
+    const msg = el.querySelector<HTMLElement>('[data-cd-message]');
+    if (!days || !hours || !minutes || !seconds || !msg) return;
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+
+    const tick = () => {
+      const now = new Date();
+      const diff = target.getTime() - now.getTime();
+      if (diff <= 0) {
+        days.textContent = '00';
+        hours.textContent = '00';
+        minutes.textContent = '00';
+        seconds.textContent = '00';
+        msg.textContent = '¡Hoy nos casamos!';
+        return;
+      }
+      const d = Math.floor(diff / 86_400_000);
+      const h = Math.floor((diff % 86_400_000) / 3_600_000);
+      const m = Math.floor((diff % 3_600_000) / 60_000);
+      const s = Math.floor((diff % 60_000) / 1_000);
+      days.textContent = pad(d);
+      hours.textContent = pad(h);
+      minutes.textContent = pad(m);
+      seconds.textContent = pad(s);
+
+      if (d === 0 && h < 6) msg.textContent = '¡Calentando motores!';
+      else if (d < 30) msg.textContent = 'Esto está a la vuelta de la esquina.';
+      else if (d < 90) msg.textContent = '¡Ya queda nada! Empieza a elegir modelito.';
+      else msg.textContent = '¡La cuenta atrás está en marcha!';
+    };
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

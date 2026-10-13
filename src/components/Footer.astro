@@ -1,0 +1,189 @@
+---
+import cfg from '../data/wedding.ts';
+import DiscoBall from './decorations/DiscoBall.astro';
+import Flower from './decorations/Flower.astro';
+import Star from './decorations/Star.astro';
+import Burst from './decorations/Burst.astro';
+import Squiggle from './decorations/Squiggle.astro';
+---
+
+<footer class="ftr">
+  <div class="ftr__decor" aria-hidden="true">
+    <Burst size="200" color="#FFD84D" accent="#FF65B3" rotate={-12} className="ftr__burst" />
+    <Flower size="140" color="#FFD84D" accent="#FF651F" variant="b" rotate={20} className="ftr__flower ftr__flower--1" />
+    <Flower size="90" color="#FF65B3" accent="#FFD84D" rotate={-10} className="ftr__flower ftr__flower--2" />
+    <Star size="60" color="#FFD84D" rotate={10} className="ftr__star" />
+    <Squiggle color="#FFD84D" width="180" height="24" className="ftr__squiggle" />
+  </div>
+
+  <div class="container ftr__container">
+    <div class="ftr__disco">
+      <DiscoBall size="100%" color="#FFD84D" accent="#FFF5DF" speed={22} />
+    </div>
+
+    <div class="ftr__copy">
+      <span class="eyebrow ftr__eyebrow"><span aria-hidden="true">★</span> 06 · El final</span>
+      <h2 class="ftr__title display">
+        <span class="ftr__title-row">
+          <span class="ftr__title-a">{cfg.couple.a}</span>
+          <span class="ftr__amp" aria-hidden="true">&amp;</span>
+          <span class="ftr__title-b">{cfg.couple.b}</span>
+        </span>
+        <span class="ftr__line2">Let&rsquo;s get married!</span>
+      </h2>
+      <p class="ftr__msg">{cfg.copy.footerMessage}</p>
+      <p class="ftr__hashtag">{cfg.couple.hashtag ?? ''}</p>
+    </div>
+
+    <div class="ftr__bottom">
+      <a class="btn" href="#top">Volver arriba <span aria-hidden="true">↑</span></a>
+      <small>Hecho con funk, brillo y mucho amor.</small>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--c-black);
+    color: var(--c-cream);
+    padding: var(--section-pad-y) 0 2rem;
+  }
+  .ftr::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(255, 101, 31, 0.35), transparent 40%),
+      radial-gradient(circle at 15% 85%, rgba(255, 101, 179, 0.35), transparent 40%);
+    z-index: 0;
+  }
+  .ftr__decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .ftr__decor :global(.ftr__burst) {
+    position: absolute;
+    top: 6%;
+    right: 6%;
+    animation: spin-slow 40s linear infinite;
+  }
+  .ftr__decor :global(.ftr__flower--1) {
+    position: absolute;
+    top: 12%;
+    left: 4%;
+    animation: float 7s ease-in-out infinite;
+  }
+  .ftr__decor :global(.ftr__flower--2) {
+    position: absolute;
+    bottom: 18%;
+    right: 8%;
+    animation: float 8s ease-in-out -2s infinite;
+  }
+  .ftr__decor :global(.ftr__star) {
+    position: absolute;
+    top: 30%;
+    right: 18%;
+    animation: spin-slow 22s linear infinite;
+  }
+  .ftr__decor :global(.ftr__squiggle) {
+    position: absolute;
+    bottom: 8%;
+    left: 8%;
+  }
+
+  .ftr__container { position: relative; z-index: 1; text-align: center; }
+  .ftr__disco {
+    width: clamp(120px, 18vw, 200px);
+    aspect-ratio: 1;
+    margin: 0 auto 1.5rem;
+  }
+  .ftr__eyebrow { background: var(--c-butter); color: var(--c-black); }
+  .ftr__copy { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+  .ftr__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1em;
+    margin-top: 0.5rem;
+    color: var(--c-cream);
+  }
+  .ftr__title-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ftr__title-a,
+  .ftr__title-b {
+    display: inline-block;
+    line-height: 0.9;
+  }
+  .ftr__title-a {
+    font-size: clamp(3.4rem, 11vw, 7.5rem);
+    color: var(--c-orange);
+    transform: rotate(-2deg);
+  }
+  .ftr__title-b {
+    font-size: clamp(3.4rem, 11vw, 7.5rem);
+    color: var(--c-pink);
+    transform: rotate(2deg);
+    text-shadow: 3px 3px 0 var(--c-black);
+  }
+  .ftr__amp {
+    font-family: var(--ff-display);
+    font-size: clamp(1.6rem, 5vw, 3rem);
+    background: var(--c-butter);
+    color: var(--c-black);
+    width: 1.4em;
+    height: 1.4em;
+    line-height: 1.3em;
+    border-radius: 50%;
+    border: 3px solid var(--c-cream);
+    transform: rotate(-5deg);
+  }
+  .ftr__line2 {
+    font-size: clamp(2rem, 7vw, 5rem);
+    color: var(--c-butter);
+    line-height: 0.95;
+    transform: rotate(1.5deg);
+  }
+  .ftr__msg {
+    margin-top: 1rem;
+    font-family: var(--ff-display);
+    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    color: var(--c-cream);
+  }
+  .ftr__hashtag {
+    color: var(--c-pink);
+    font-family: var(--ff-display);
+    font-size: 1.4rem;
+  }
+  .ftr__bottom {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .ftr__bottom small {
+    color: var(--c-cream);
+    opacity: 0.7;
+    font-size: 0.85rem;
+  }
+  .ftr__bottom .btn {
+    background: var(--c-orange);
+    color: var(--c-black);
+  }
+  .ftr__bottom .btn:hover {
+    background: var(--c-butter);
+    color: var(--c-black);
+  }
+
+  @media (min-width: 720px) {
+    .ftr__bottom {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+</style>

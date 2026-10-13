@@ -1,0 +1,43 @@
+---
+/**
+ * Squiggle — wavy line / loopy underline.
+ * horizontal: wave goes left-to-right (default)
+ */
+interface Props {
+  color?: string;
+  width?: number | string;
+  height?: number | string;
+  className?: string;
+  flip?: boolean;
+}
+const {
+  color = '#191414',
+  width = 240,
+  height = 30,
+  className = '',
+  flip = false,
+} = Astro.props;
+---
+
+<svg
+  viewBox="0 0 240 30"
+  width={width}
+  height={height}
+  class={`squiggle ${className}`}
+  style={`transform:${flip ? 'scaleX(-1)' : 'none'}`}
+  aria-hidden="true"
+>
+  <path
+    d="M2,15 Q20,2 40,15 T80,15 T120,15 T160,15 T200,15 T238,15"
+    fill="none"
+    stroke={color}
+    stroke-width="5"
+    stroke-linecap="round"
+  />
+</svg>
+
+<style>
+  .squiggle {
+    overflow: visible;
+  }
+</style>

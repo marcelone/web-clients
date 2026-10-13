@@ -1,0 +1,19 @@
+{
+  "name": "miguel-fran-wedding",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.2.6"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.0"
+  }
+}
